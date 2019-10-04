@@ -5,13 +5,14 @@ const { Option } = Select;
 
 export default function FormField(props) {
   switch (props.type) {
-    case Select:
+    case "Select":
       return (
         <div>
           <Select
             defaultValue={props.defaultValue}
-            style={{ width: 120 }}
+            style={{ width: 200, margin: 10 }}
             onChange={props.handleChange}
+            placeholder="placeholder"
           >
             {props.option.length > 0 &&
               props.option.map(option => (
@@ -31,7 +32,6 @@ export default function FormField(props) {
             name={props.name}
             onChange={props.onChange}
             prefix={props.children}
-
           />
         </div>
       );

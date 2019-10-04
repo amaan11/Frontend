@@ -38,12 +38,14 @@ class CustomModal extends React.Component {
                     title={this.props.title}
                     visible={isVisible}
                     footer={[
-                        <Button key="back" onClick={this.handleCancel}>
-                            Cancel
-                        </Button>,
-                        <Button key="submit" type="primary" onClick={this.handleOk}>
-                            Submit
-                        </Button>,
+                        <div>
+                            <Button key="back" onClick={this.handleCancel}>
+                                Cancel
+                            </Button>
+                            <Button key="submit" type="primary" onClick={this.handleOk}>
+                                Submit
+                            </Button>
+                        </div>
                     ]}
                 >
                     {this.props.content}

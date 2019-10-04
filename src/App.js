@@ -13,9 +13,10 @@ import configStore, { history } from "../src/redux/store";
 //Component imports
 import Login from "./screens/Auth/login";
 import Register from "./screens/Auth/Register";
+import Dashboard from "./screens/Dashboard";
+import Profile from "./screens/Profile";
 
-import AuthenticatedRoute from "./AuthenticatedRoute"
-
+import AuthenticatedRoute from "./AuthenticatedRoute";
 
 function App() {
   let { store, persistor } = configStore;
@@ -27,7 +28,8 @@ function App() {
           <Switch>
             <AuthenticatedRoute exact path="/login" component={Login} />
             <AuthenticatedRoute exact path="/register" component={Register} />
-
+            <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
+            <AuthenticatedRoute exact path="/profile" component={Profile} />
           </Switch>
         </Router>
       </PersistGate>
