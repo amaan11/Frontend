@@ -12,7 +12,7 @@ export default function FormField(props) {
             defaultValue={props.defaultValue}
             style={{ width: 200, margin: 10 }}
             onChange={props.handleChange}
-            placeholder="placeholder"
+            placeholder={props.placeholder}
           >
             {props.option.length > 0 &&
               props.option.map(option => (

@@ -1,5 +1,6 @@
 import React from "react";
 import { Drawer, Button, Icon } from "antd";
+import history from "../../history";
 
 class Header extends React.Component {
   constructor(props) {
@@ -8,6 +9,9 @@ class Header extends React.Component {
       placement: "left"
     };
   }
+  routeHandler = value => {
+    history.push(`/${value}`);
+  };
   showDrawer = () => {
     this.setState({
       visible: true
@@ -45,7 +49,13 @@ class Header extends React.Component {
         >
           <p>ORDER FOOD</p>
           <p>BOOK TABLE</p>
-          <p>PROFILE</p>
+          <p
+            onClick={() => {
+              this.routeHandler("profile");
+            }}
+          >
+            PROFILE
+          </p>
           <p>REVIEWS</p>
         </Drawer>
       </div>

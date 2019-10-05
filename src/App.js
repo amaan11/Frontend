@@ -28,7 +28,7 @@ function App() {
       <PersistGate persistor={persistor}>
         <Router history={history}>
           <Switch>
-            <AuthenticatedRoute exact path="/login" component={Login} />
+            <AuthenticatedRoute exact path="/" component={Login} />
             <AuthenticatedRoute exact path="/register" component={Register} />
             <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
             <AuthenticatedRoute exact path="/profile" component={Profile} />

@@ -1,3 +1,4 @@
+import moment from "moment";
 const cities = [
   { label: "New Delhi", value: "1" },
   { label: "Kolkatta", value: "2" },
@@ -11,4 +12,25 @@ const cities = [
   { label: "Jaipur", value: "10" }
 ];
 
-export { cities };
+const date = [];
+const guests = [];
+for (let i = 1; i < 20; i++) {
+  date.push({
+    label: moment()
+      .add(i, "days")
+      .format("ddd,DD-MM-YYYY"),
+    value: moment()
+      .add(i, "days")
+      .format("DD-MM-YYYY")
+  });
+}
+
+const session = [
+  { label: "LUNCH", value: "lunch" },
+  { label: "BREAKFAST", value: "breakfast" },
+  { label: "DINNER", value: "dinner" }
+];
+for (let i = 1; i < 10; i++) {
+  guests.push({ label: i, value: i });
+}
+export { cities, date, session, guests };

@@ -1,8 +1,10 @@
 import React from "react";
-import { Drawer, Button, Icon, Carousel, Card } from "antd";
+import { Button, Carousel, Card, Modal } from "antd";
 import { get, map } from "lodash";
 import { connect } from "react-redux";
 import Header from "../Header";
+import FormField from "../../components/FormField";
+import { session, guests, date } from "../../utils/data";
 
 const styles = {
   bookTableDiv: {
@@ -19,7 +21,9 @@ const styles = {
 class RestaurantDetail extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isBookTableModal: false
+    };
   }
   getRestaurantId = () => {
     const restaurantId = get(this.props, "location.pathname", null);
@@ -46,6 +50,20 @@ class RestaurantDetail extends React.Component {
     return result;
   };
   onCarouselChange = () => {};
+  bookTableHandler = () => {
+    this.setState({ isBookTableModal: true });
+  };
+  handleOk = e => {
+    this.setState({
+      isBookTableModal: false
+    });
+  };
+
+  handleCancel = e => {
+    this.setState({
+      isBookTableModal: false
+    });
+  };
 
   componentDidMount = () => {
     const id = this.getRestaurantId();
@@ -54,8 +72,9 @@ class RestaurantDetail extends React.Component {
 
   render() {
     const restaurant = this.filterRestaurant();
+    const { isBookTableModal } = this.state;
 
-    console.log("restaurant1>>s", restaurant);
+    console.log("restaurant1>>s", date);
     return (
       <div>
         <Header />
@@ -84,12 +103,53 @@ class RestaurantDetail extends React.Component {
               </div>
             </div>
             <div style={styles.bookTableDiv}>
-              <Button type="primary" style={styles.bookBtn}>
+              <Button
+                type="primary"
+                style={styles.bookBtn}
+                onClick={this.bookTableHandler}
+              >
                 BOOK A TABLE
               </Button>
             </div>
           </Card>
         </div>
+        {
+          <Modal
+            title="BOOK A TABLE"
+            visible={isBookTableModal}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            width="700px"
+          >
+            <h3>{restaurant.name}</h3>
+            <div className="d-flex">
+              <div>
+                <div>Pickup A Date</div>
+                <FormField
+                  type="Select"
+                  option={date}
+                  placeholder="SELECT A DATE"
+                />
+              </div>
+              <div>
+                <div>Number Of Guests</div>
+                <FormField
+                  type="Select"
+                  option={session}
+                  placeholder="NO. OF Guests"
+                />
+              </div>
+              <div>
+                <div>Select A Session</div>
+                <FormField
+                  type="Select"
+                  option={guests}
+                  placeholder="SELECT A SESSION"
+                />
+              </div>
+            </div>
+          </Modal>
+        }
       </div>
     );
   }
