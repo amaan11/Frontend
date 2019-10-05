@@ -1,6 +1,7 @@
 import React from "react";
 import { get, map } from "lodash";
 import Card from "../../components/Card";
+import history from "../../history";
 
 const styles = {
   noResult: {
@@ -12,6 +13,9 @@ class RestaurantList extends React.Component {
     super(props);
     this.state = {};
   }
+  onSelectRestaurant = restaurantId => {
+    history.push(`/restaurant/${restaurantId}`);
+  };
   getRestaurantList = () => {
     const restaurants = get(this.props, "restaurants", []);
 
@@ -32,17 +36,19 @@ class RestaurantList extends React.Component {
       <div className="d-flex" style={{ flexWrap: "wrap" }}>
         {restaurantList.length > 0 ? (
           map(restaurantList, restaurant => (
-            <Card
-              title={restaurant.name}
-              cost={restaurant.average_cost_for_two}
-              cuisines={restaurant.cuisines}
-              description={restaurant.location.address}
-              imageUrl={restaurant.featured_image}
-              highlights={restaurant.highlights}
-              timing={restaurant.timings}
-              rating={restaurant.user_rating.aggregate_rating}
-              votes={restaurant.user_rating.votes}
-            />
+            <div onClick={() => this.onSelectRestaurant(restaurant.id)}>
+              <Card
+                title={restaurant.name}
+                cost={restaurant.average_cost_for_two}
+                cuisines={restaurant.cuisines}
+                description={restaurant.location.address}
+                imageUrl={restaurant.featured_image}
+                highlights={restaurant.highlights}
+                timing={restaurant.timings}
+                rating={restaurant.user_rating.aggregate_rating}
+                votes={restaurant.user_rating.votes}
+              />
+            </div>
           ))
         ) : (
           <h1 style={styles.noResult}>Sorry,No Results Found</h1>

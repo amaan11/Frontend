@@ -2,12 +2,10 @@ import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { persistStore, persistReducer } from "redux-persist";
-import { createBrowserHistory } from "history";
 import storage from "redux-persist/lib/storage";
 import rootReducer from "./reducers/index";
 import rootSaga from "../redux-saga";
-
-export const history = createBrowserHistory();
+import history from "../history";
 
 const persistConfig = {
   key: "root",

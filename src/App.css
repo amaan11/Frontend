@@ -51,3 +51,14 @@
 .text-center {
   text-align: center;
 }
+.ant-carousel .slick-slide {
+  width: 100px;
+  text-align: center;
+  height: 250px;
+  line-height: 160px;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+}

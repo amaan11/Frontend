@@ -1,11 +1,12 @@
 import React from "react";
-import { Drawer, Button, Radio, Icon, Checkbox } from "antd";
+import { Button, Radio } from "antd";
 import { connect } from "react-redux";
 import { get, map, debounce } from "lodash";
 import FormField from "../../components/FormField";
 import { cities } from "../../utils/data";
 import { getRestaurantByCityRequest } from "../../redux/action/dashboard";
 import RestaurantList from "./RestaurantList";
+import Header from "../Header";
 
 const RadioGroup = Radio.Group;
 
@@ -33,7 +34,6 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      placement: "left",
       cityId: 4,
       searchValue: ""
     };
@@ -59,23 +59,6 @@ class Dashboard extends React.Component {
     this.props.getRestaurant(sortPayload);
   };
 
-  showDrawer = () => {
-    this.setState({
-      visible: true
-    });
-  };
-
-  onClose = () => {
-    this.setState({
-      visible: false
-    });
-  };
-
-  onChange = e => {
-    this.setState({
-      placement: e.target.value
-    });
-  };
   selectCityHandler = value => {
     const payload = {
       cityId: value,
@@ -107,25 +90,7 @@ class Dashboard extends React.Component {
     const { searchValue } = this.state;
     return (
       <div>
-        <div className="d-flex m-10">
-          <div>
-            <Icon type="unordered-list" onClick={this.showDrawer} />
-          </div>
-          <div>
-            <Button type="danger">Logout</Button>
-          </div>
-        </div>
-        <Drawer
-          placement={this.state.placement}
-          closable={false}
-          onClose={this.onClose}
-          visible={this.state.visible}
-        >
-          <p>ORDER FOOD</p>
-          <p>BOOK TABLE</p>
-          <p>PROFILE</p>
-          <p>REVIEWS</p>
-        </Drawer>
+        <Header />
         <div style={styles.innerDiv}>
           <div className="d-flex">
             <div style={styles.selectStyle}>
