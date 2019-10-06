@@ -1,15 +1,20 @@
-..
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with Create React App.
 
-## Available Scripts
+## To start the project
+clone the project
 
-In the project directory, you can run:
+## In the project directory, you can run:
 
-### `npm start`
+npm install npm start
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open http://localhost:3000 to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Tools and libraries used in project
+Library - React
+State Management - Redux 
+Middleware - redux saga 
+css Libarry - antd
+utility Library - lodash
 
+## The backend for this project is developed in express
+clone the project - https://github.com/amaan11/Auth-backend follow the steps mentioned in README file of that repository
