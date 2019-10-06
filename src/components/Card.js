@@ -6,7 +6,8 @@ const { Meta } = Card;
 const styles = {
   card: {
     width: 420,
-    margin: 10
+    margin: 10,
+    height: 300
   },
   image: {
     marginRight: 20

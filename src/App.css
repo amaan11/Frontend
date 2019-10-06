@@ -31,21 +31,24 @@
   margin: 10px;
 }
 .bg-green {
-  width: 60%;
+  width: 30px;
+  height: 30px;
   color: white;
-  padding: 5;
+  padding: 5px;
   background-color: green;
 }
 .bg-yellow {
-  width: 60%;
+  width: 30px;
+  height: 30px;
   color: white;
-  padding: 5;
+  padding: 5px;
   background-color: yellowgreen;
 }
 .bg-red {
-  width: 60%;
+  width: 30px;
+  height: 30px;
   color: white;
-  padding: 5;
+  padding: 5px;
   background-color: red;
 }
 .text-center {

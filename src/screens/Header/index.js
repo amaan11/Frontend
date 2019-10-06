@@ -1,6 +1,9 @@
 import React from "react";
 import { Drawer, Button, Icon } from "antd";
+import { connect } from "react-redux";
+import { get } from "lodash";
 import history from "../../history";
+import { logoutRequest } from "../../redux/action/auth";
 
 class Header extends React.Component {
   constructor(props) {
@@ -17,6 +20,10 @@ class Header extends React.Component {
       visible: true
     });
   };
+  logoutHandler = async () => {
+    this.props.logoutRequest();
+    await history.push("/");
+  };
 
   onClose = () => {
     this.setState({
@@ -31,6 +38,7 @@ class Header extends React.Component {
   };
   render() {
     const { placement } = this.state;
+    const username = get(this.props, "user.full_name", null);
     return (
       <div>
         <div className="d-flex m-10">
@@ -38,7 +46,9 @@ class Header extends React.Component {
             <Icon type="unordered-list" onClick={this.showDrawer} />
           </div>
           <div>
-            <Button type="danger">Logout</Button>
+            <Button type="danger" onClick={this.logoutHandler}>
+              Logout
+            </Button>
           </div>
         </div>
         <Drawer
@@ -47,8 +57,14 @@ class Header extends React.Component {
           onClose={this.onClose}
           visible={this.state.visible}
         >
-          <p>ORDER FOOD</p>
-          <p>BOOK TABLE</p>
+          <h3>Welcome {username}</h3>
+          <p
+            onClick={() => {
+              this.routeHandler("dashboard");
+            }}
+          >
+            BOOK TABLE
+          </p>
           <p
             onClick={() => {
               this.routeHandler("profile");
@@ -63,4 +79,18 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+const mapStateToProps = state => {
+  const { user } = state.auth;
+  return {
+    user: user
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    logoutRequest: () => dispatch(logoutRequest())
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header);

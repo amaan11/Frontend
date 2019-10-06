@@ -1,58 +1,55 @@
-import React from 'react'
-import { Modal, Button } from 'antd';
+import React from "react";
+import { Modal, Button } from "antd";
 
 class CustomModal extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            visible: props.isVisible ? props.isVisible : false
-        }
-    }
-
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: props.isVisible ? props.isVisible : false
     };
+  }
 
-    handleOk = e => {
-        this.setState({
-            visible: false,
-        });
-    };
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
 
-    handleCancel = e => {
-        this.setState({
-            visible: false,
-        });
-    };
+  handleOk = e => {
+    this.setState({
+      visible: false
+    });
+  };
 
-    render() {
-        const { isVisible } = this.state
+  handleCancel = e => {
+    this.setState({
+      visible: false
+    });
+  };
 
-
-        console.log("proops", this.props.isVisible)
-        return (
+  render() {
+    const { isVisible } = this.state;
+    return (
+      <div>
+        <Modal
+          title={this.props.title}
+          visible={isVisible}
+          footer={[
             <div>
-                <Modal
-                    title={this.props.title}
-                    visible={isVisible}
-                    footer={[
-                        <div>
-                            <Button key="back" onClick={this.handleCancel}>
-                                Cancel
-                            </Button>
-                            <Button key="submit" type="primary" onClick={this.handleOk}>
-                                Submit
-                            </Button>
-                        </div>
-                    ]}
-                >
-                    {this.props.content}
-                </Modal>
+              <Button key="back" onClick={this.handleCancel}>
+                Cancel
+              </Button>
+              <Button key="submit" type="primary" onClick={this.handleOk}>
+                Submit
+              </Button>
             </div>
-        );
-    }
+          ]}
+        >
+          {this.props.content}
+        </Modal>
+      </div>
+    );
+  }
 }
 
-export default CustomModal; 
+export default CustomModal;

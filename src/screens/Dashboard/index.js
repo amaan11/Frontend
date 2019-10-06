@@ -43,7 +43,6 @@ class Dashboard extends React.Component {
     const { searchValue, cityId } = this.state;
     const payload = {};
 
-    console.log("state>>>", this.state);
     if (searchValue) {
       payload["search"] = searchValue;
     }
@@ -54,7 +53,6 @@ class Dashboard extends React.Component {
       sort: sort,
       order: order
     };
-    console.log("sort>>>", sortPayload);
 
     this.props.getRestaurant(sortPayload);
   };

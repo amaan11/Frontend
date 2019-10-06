@@ -19,7 +19,6 @@ class RestaurantList extends React.Component {
   getRestaurantList = () => {
     const restaurants = get(this.props, "restaurants", []);
 
-    console.log("restaurants", restaurants);
     let restaurantList = [];
     restaurantList =
       restaurants.length > 0 &&
@@ -30,8 +29,6 @@ class RestaurantList extends React.Component {
   };
   render() {
     const restaurantList = this.getRestaurantList();
-    console.log("resr>>>", restaurantList);
-    // const imageUrl=require("")
     return (
       <div className="d-flex" style={{ flexWrap: "wrap" }}>
         {restaurantList.length > 0 ? (

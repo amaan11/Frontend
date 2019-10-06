@@ -36,7 +36,6 @@ class Login extends Component {
   }
 
   onForgetPasswordHandler = () => {
-    console.log("forget>>>");
     this.setState({ isForgetPassword: true });
   };
   onChangeHandler = e => {
@@ -84,7 +83,6 @@ class Login extends Component {
                     className="input-field"
                     placeholder="email"
                     onChange={this.onChangeHandler}
-                    // value={email}
                   >
                     <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
                   </FormField>
@@ -104,7 +102,6 @@ class Login extends Component {
                     className="input-field"
                     placeholder="password"
                     onChange={this.onChangeHandler}
-                    // value={password}
                   >
                     <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
                   </FormField>

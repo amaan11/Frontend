@@ -29,16 +29,28 @@ export default class Auth {
     return response;
   };
 
-  static newsArticle = async () => {
-    const _url = "http://www.mocky.io/v2/5d8686a032000024b607b40e";
+  static getRestaurantByCity = async payload => {
     let response = {};
-    try {
-      await fetch(_url)
-        .then(response => response.json())
-        .then(res => {
-          response = res.articles;
-        });
-      return response;
-    } catch (error) {}
+    let _url = `https://developers.zomato.com/api/v2.1/search?entity_id=${payload.cityId}&entity_type=city&count=100`;
+    if (payload.hasOwnProperty("sort") && payload.hasOwnProperty("order")) {
+      _url = `https://developers.zomato.com/api/v2.1/search?entity_id=${payload.cityId}&entity_type=city&count=30&sort=${payload.sort}&order=${payload.order}`;
+    }
+    if (payload.hasOwnProperty("search")) {
+      if (payload.hasOwnProperty("sort") && payload.hasOwnProperty("order")) {
+        _url = `https://developers.zomato.com/api/v2.1/search?entity_id=${payload.cityId}&entity_type=city&q=${payload.search}&count=30&sort=${payload.sort}&order=${payload.order}`;
+      } else {
+        _url = `https://developers.zomato.com/api/v2.1/search?entity_id=${payload.cityId}&entity_type=city&q=${payload.search}&count=30`;
+      }
+    }
+
+    await fetch(_url, {
+      headers: {
+        "Content-Type": "application/json",
+        "user-key": "0d26c3391b2e55b8d83c4ec767927059"
+      }
+    })
+      .then(response => response.json())
+      .then(res => (response = res));
+    return response;
   };
 }

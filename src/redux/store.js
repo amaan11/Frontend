@@ -10,7 +10,7 @@ import history from "../history";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "dashboard"]
+  whitelist: ["auth", "dashboard", "profile"]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer(history));

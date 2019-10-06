@@ -74,7 +74,6 @@ class RestaurantDetail extends React.Component {
     const restaurant = this.filterRestaurant();
     const { isBookTableModal } = this.state;
 
-    console.log("restaurant1>>s", date);
     return (
       <div>
         <Header />
@@ -96,8 +95,8 @@ class RestaurantDetail extends React.Component {
                 <div>{restaurant.location.address}</div>
               </div>
               <div>
-                <div className="bg-green m-10" style={{ fontSize: 20 }}>
-                  {restaurant.user_rating.aggregate_rating}/5
+                <div className="bg-green m-10">
+                  {restaurant.user_rating.aggregate_rating}
                 </div>
                 <div>{restaurant.user_rating.votes} votes</div>
               </div>
