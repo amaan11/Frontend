@@ -2,7 +2,8 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
-  POST_SIGNUP_REQUEST
+  SIGNUP_REQUEST,
+  SIGNUP_SUCCESS
 } from "./types";
 export const loginRequest = payload => {
   return {
@@ -22,9 +23,15 @@ export const loginFailed = response => {
     response
   };
 };
-export const postSignupRequest = payload => {
+export const SignupRequest = payload => {
   return {
-    type: POST_SIGNUP_REQUEST,
+    type: SIGNUP_REQUEST,
     payload
+  };
+};
+export const signupSuccess = response => {
+  return {
+    type: SIGNUP_SUCCESS,
+    response
   };
 };

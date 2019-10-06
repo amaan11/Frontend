@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Input, Select, Checkbox, Button, AutoComplete } from "antd";
 import { connect } from "react-redux";
-import { postSignupRequest } from "../../redux/action/auth";
+import { SignupRequest } from "../../redux/action/auth";
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
 
@@ -180,7 +180,7 @@ const WrappedRegistrationForm = Form.create({ name: "register" })(
 );
 const mapDispatchToProps = dispatch => {
   return {
-    onRegister: payload => dispatch(postSignupRequest(payload))
+    onRegister: payload => dispatch(SignupRequest(payload))
   };
 };
 
