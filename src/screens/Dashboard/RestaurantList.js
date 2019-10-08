@@ -1,7 +1,6 @@
 import React from "react";
 import { get, map } from "lodash";
 import Card from "../../components/Card";
-import history from "../../history";
 
 const styles = {
   noResult: {
@@ -11,11 +10,26 @@ const styles = {
 class RestaurantList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isBookTableModal: false
+    };
   }
-  onSelectRestaurant = restaurantId => {
-    history.push(`/restaurant/${restaurantId}`);
+  bookTableHanlder = payload => {
+    console.log("test2");
+    this.props.bookTable(payload);
   };
+  handleOkHandler = e => {
+    this.setState({
+      isBookTableModal: false
+    });
+  };
+
+  handleCancelHandler = e => {
+    this.setState({
+      isBookTableModal: false
+    });
+  };
+
   getRestaurantList = () => {
     const restaurants = get(this.props, "restaurants", []);
 
@@ -29,11 +43,12 @@ class RestaurantList extends React.Component {
   };
   render() {
     const restaurantList = this.getRestaurantList();
+    const { isBookTableModal } = this.state;
     return (
       <div className="d-flex" style={{ flexWrap: "wrap" }}>
         {restaurantList.length > 0 ? (
           map(restaurantList, restaurant => (
-            <div onClick={() => this.onSelectRestaurant(restaurant.id)}>
+            <div>
               <Card
                 title={restaurant.name}
                 cost={restaurant.average_cost_for_two}
@@ -44,6 +59,8 @@ class RestaurantList extends React.Component {
                 timing={restaurant.timings}
                 rating={restaurant.user_rating.aggregate_rating}
                 votes={restaurant.user_rating.votes}
+                restaurantId={restaurant.id}
+                bookTable={this.bookTableHanlder}
               />
             </div>
           ))

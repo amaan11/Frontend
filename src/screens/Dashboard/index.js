@@ -7,8 +7,9 @@ import { cities } from "../../utils/data";
 import { getRestaurantByCityRequest } from "../../redux/action/dashboard";
 import RestaurantList from "./RestaurantList";
 import Header from "../Header";
-
-const RadioGroup = Radio.Group;
+import { bookTableRequest } from "../../redux/action/dashboard";
+import swal from "sweetalert";
+import moment from "moment";
 
 const styles = {
   innerDiv: {
@@ -39,6 +40,45 @@ class Dashboard extends React.Component {
     };
     this.sortHandler = this.sortHandler.bind(this);
   }
+
+  checkAvailability = (restaurantId, date, time, guestCount) => {
+    const tableBookings = get(this.props, "tableBookings", []);
+    let count = 0;
+    if (tableBookings && tableBookings.length > 0) {
+      map(tableBookings, booking => {
+        if (
+          booking.restaurant_id == restaurantId &&
+          booking.booking_date == date &&
+          booking.booking_time == time
+        ) {
+          count += parseInt(booking.no_of_guests);
+        }
+      });
+    }
+    if (count + guestCount <= 20) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  bookTableHandler = async payload => {
+    const restaurantId = payload.restaurantId;
+    const date = moment(payload.bookingDate).format("YYYY-MM-DD");
+    const time = payload.bookingTime;
+    const guestCount = payload.guestCount;
+    if (this.checkAvailability(restaurantId, date, time, guestCount)) {
+      await this.props.bookTableRequest(payload);
+      swal("Thank You!", "Your Booking Has been confirmed!", "success");
+    } else {
+      swal(
+        "Booking Not Possible",
+        "Plese Select A different Time Slot!",
+        "info"
+      );
+    }
+  };
+
   sortHandler = (sort, order) => {
     const { searchValue, cityId } = this.state;
     const payload = {};
@@ -147,22 +187,27 @@ class Dashboard extends React.Component {
         </div>
 
         <div style={{ margin: 30 }}>
-          <RestaurantList restaurants={restaurants} />
+          <RestaurantList
+            restaurants={restaurants}
+            bookTable={this.bookTableHandler}
+          />
         </div>
       </div>
     );
   }
 }
 const mapStateToProps = state => {
-  const { restaurants } = state.dashboard;
+  const { restaurants, tableBookings } = state.dashboard;
   return {
-    restaurants: restaurants
+    restaurants: restaurants,
+    tableBookings: tableBookings
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getRestaurant: payload => dispatch(getRestaurantByCityRequest(payload))
+    getRestaurant: payload => dispatch(getRestaurantByCityRequest(payload)),
+    bookTableRequest: payload => dispatch(bookTableRequest(payload))
   };
 };
 

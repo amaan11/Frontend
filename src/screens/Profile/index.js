@@ -17,6 +17,14 @@ const styles = {
   },
   adressModal: {
     width: "80%"
+  },
+  viewAdress: {
+    margin: 10
+  },
+  viewAdressBtn: {
+    width: "20%",
+    margin: "20px auto",
+    justifyContent: "center"
   }
 };
 const delieveryLocationType = [
@@ -33,9 +41,16 @@ class Profile extends React.Component {
       area: "",
       landmark: "",
       address: "",
-      locationType: ""
+      locationType: "",
+      viewAdressModal: false
     };
   }
+  viewAdressHandler = () => {
+    this.setState({ viewAdressModal: true });
+  };
+  viewAdressCloseHandler = () => {
+    this.setState({ viewAdressModal: false });
+  };
   addAdressHandler = () => {
     this.setState({ addAdressModal: true });
   };
@@ -43,6 +58,7 @@ class Profile extends React.Component {
     this.setState({ addAdressModal: false });
   };
   handleChange = e => {
+    e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   };
   onSelectLocationTypeHandler = value => {
@@ -58,7 +74,12 @@ class Profile extends React.Component {
       locationType: locationType
     };
     this.props.addAdress(payload);
-    this.setState({ addAdressModal: false });
+    this.setState({
+      addAdressModal: false,
+      area: "",
+      address: "",
+      landmark: ""
+    });
   };
   addAdressModalContent = () => {
     const { area, address, landmark } = this.state;
@@ -93,7 +114,7 @@ class Profile extends React.Component {
   };
   render() {
     const user = get(this.props, "user", {});
-    const { files, addAdressModal } = this.state;
+    const { files, addAdressModal, viewAdressModal } = this.state;
     const modalContent = this.addAdressModalContent();
     const delieveryLocation = get(this.props, "delieveryLocation", []);
     let imageUrl =
@@ -141,16 +162,42 @@ class Profile extends React.Component {
                 Add ADDRESS
               </Button>
             </div>
-            {delieveryLocation.length > 0 &&
-              map(delieveryLocation, location => (
+            {delieveryLocation.length > 0 ? (
+              <div>
                 <Card>
-                  <h3>{location.locationType}</h3>
-                  <div>{location.area}</div>
+                  <h3>{delieveryLocation[0].locationType}</h3>
+                  <div>{delieveryLocation[0].area}</div>
                   <div>
-                    {location.address} {location.landmark}
+                    {delieveryLocation[0].address}{" "}
+                    {delieveryLocation[0].landmark}
                   </div>
                 </Card>
-              ))}
+                <div style={styles.viewAdressBtn}>
+                  <Button type="link" onClick={this.viewAdressHandler}>
+                    Show All Address
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <h3>No Address Found! Please add an Address</h3>
+            )}
+            <Modal
+              title="VIEW ALL SAVED ADDRESS"
+              visible={viewAdressModal}
+              onOk={this.viewAdressCloseHandler}
+              onCancel={this.viewAdressCloseHandler}
+            >
+              {delieveryLocation.length > 0 &&
+                map(delieveryLocation, location => (
+                  <Card style={styles.viewAdress}>
+                    <h3>{location.locationType}</h3>
+                    <div>{location.area}</div>
+                    <div>
+                      {location.address} {location.landmark}
+                    </div>
+                  </Card>
+                ))}
+            </Modal>
           </Card>
         </div>
         {addAdressModal && (

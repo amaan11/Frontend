@@ -3,7 +3,6 @@ import { Button, Icon, Form } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import FormField from "../../components/FormField";
-import Modal from "../../components/Modal";
 import { loginRequest } from "../../redux/action/auth";
 
 const styles = {
@@ -123,9 +122,6 @@ class Login extends Component {
               <Link to="/register">Register Now</Link>
             </Button>
           </div>
-          {isForgetPassword && (
-            <Modal content="test" title="FORGET PASSWROD" isVisible="true" />
-          )}
         </div>
       </div>
     );

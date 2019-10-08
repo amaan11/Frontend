@@ -3,8 +3,10 @@ import { Button, Carousel, Card, Modal } from "antd";
 import { get, map } from "lodash";
 import { connect } from "react-redux";
 import Header from "../Header";
-import FormField from "../../components/FormField";
-import { session, guests, date } from "../../utils/data";
+import BookTableModal from "../../components/BookTableModal";
+import { bookTableRequest } from "../../redux/action/dashboard";
+import swal from "sweetalert";
+import moment from "moment";
 
 const styles = {
   bookTableDiv: {
@@ -24,17 +26,8 @@ class RestaurantDetail extends React.Component {
     this.state = {
       isBookTableModal: false
     };
+    this.child = React.createRef();
   }
-  getRestaurantId = () => {
-    const restaurantId = get(this.props, "location.pathname", null);
-
-    const splitId = restaurantId.split("/");
-    let id = 0;
-    if (splitId.length > 0) {
-      id = splitId[2] && splitId[2];
-    }
-    return id;
-  };
   filterRestaurant = () => {
     const restaurantId = this.getRestaurantId();
     const restaurants = get(this.props, "restaurants", []);
@@ -49,20 +42,74 @@ class RestaurantDetail extends React.Component {
 
     return result;
   };
-  onCarouselChange = () => {};
-  bookTableHandler = () => {
-    this.setState({ isBookTableModal: true });
+  checkAvailability = (restaurantId, date, time, guestCount) => {
+    const tableBookings = get(this.props, "tableBookings", []);
+    let count = 0;
+    if (tableBookings && tableBookings.length > 0) {
+      map(tableBookings, booking => {
+        if (
+          booking.restaurant_id == restaurantId &&
+          booking.booking_date == date &&
+          booking.booking_time == time
+        ) {
+          count += parseInt(booking.no_of_guests);
+        }
+      });
+    }
+    if (count + guestCount <= 20) {
+      return true;
+    } else {
+      return false;
+    }
   };
-  handleOk = e => {
+  handleOkHandler = async e => {
+    const restaurant = this.filterRestaurant();
+    const child = get(this.child, "current", null);
+    const restaurantId = restaurant.id;
+    if (child) {
+      const data = child.bookingData();
+      const payload = {
+        ...data,
+        restaurantId: restaurantId
+      };
+      const date = moment(data.bookingDate).format("YYYY-MM-DD");
+      const time = data.bookingTime;
+      const guestCount = data.guestCount;
+      if (this.checkAvailability(restaurantId, date, time, guestCount)) {
+        await this.props.bookTable(payload);
+        swal("Thank You!", "Your Booking Has been confirmed!", "success");
+      } else {
+        swal(
+          "Booking Not Possible",
+          "Plese Select A different Time Slot!",
+          "info"
+        );
+      }
+    }
     this.setState({
       isBookTableModal: false
     });
   };
 
-  handleCancel = e => {
+  handleCancelHandler = e => {
     this.setState({
       isBookTableModal: false
     });
+  };
+  getRestaurantId = () => {
+    const restaurantId = get(this.props, "location.pathname", null);
+
+    const splitId = restaurantId.split("/");
+    let id = 0;
+    if (splitId.length > 0) {
+      id = splitId[2] && splitId[2];
+    }
+    return id;
+  };
+
+  onCarouselChange = () => {};
+  bookTableHandler = () => {
+    this.setState({ isBookTableModal: true });
   };
 
   componentDidMount = () => {
@@ -72,7 +119,11 @@ class RestaurantDetail extends React.Component {
 
   render() {
     const restaurant = this.filterRestaurant();
+
     const { isBookTableModal } = this.state;
+    console.log("restaurant", restaurant);
+
+    const tableBooking = restaurant.has_table_booking ? false : true;
 
     return (
       <div>
@@ -106,61 +157,40 @@ class RestaurantDetail extends React.Component {
                 type="primary"
                 style={styles.bookBtn}
                 onClick={this.bookTableHandler}
+                // disabled={tableBooking}
               >
                 BOOK A TABLE
               </Button>
             </div>
           </Card>
         </div>
-        {
-          <Modal
-            title="BOOK A TABLE"
-            visible={isBookTableModal}
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-            width="700px"
-          >
-            <h3>{restaurant.name}</h3>
-            <div className="d-flex">
-              <div>
-                <div>Pickup A Date</div>
-                <FormField
-                  type="Select"
-                  option={date}
-                  placeholder="SELECT A DATE"
-                />
-              </div>
-              <div>
-                <div>Number Of Guests</div>
-                <FormField
-                  type="Select"
-                  option={session}
-                  placeholder="NO. OF Guests"
-                />
-              </div>
-              <div>
-                <div>Select A Session</div>
-                <FormField
-                  type="Select"
-                  option={guests}
-                  placeholder="SELECT A SESSION"
-                />
-              </div>
-            </div>
-          </Modal>
-        }
+        {isBookTableModal && (
+          <BookTableModal
+            restaurantName={restaurant.name}
+            isTableBooked={isBookTableModal}
+            handleCancel={this.handleCancelHandler}
+            handleOk={this.handleOkHandler}
+            ref={this.child}
+          />
+        )}
       </div>
     );
   }
 }
 const mapStateToProps = state => {
-  const { restaurants } = state.dashboard;
+  const { restaurants, tableBookings } = state.dashboard;
   return {
-    restaurants: restaurants
+    restaurants: restaurants,
+    tableBookings: tableBookings
+  };
+};
+const mapDipatchToProps = dispatch => {
+  return {
+    bookTable: payload => dispatch(bookTableRequest(payload))
   };
 };
 
 export default connect(
   mapStateToProps,
-  null
+  mapDipatchToProps
 )(RestaurantDetail);

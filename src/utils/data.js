@@ -33,4 +33,5 @@ const session = [
 for (let i = 1; i < 10; i++) {
   guests.push({ label: i, value: i });
 }
+
 export { cities, date, session, guests };

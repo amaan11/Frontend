@@ -53,4 +53,19 @@ export default class Auth {
       .then(res => (response = res));
     return response;
   };
+
+  static bookTable = async payload => {
+    const _url = "http://localhost:8000/book-table";
+    let response = {};
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    };
+    await fetch(_url, requestOptions)
+      .then(response => response.json())
+      .then(res => (response = res));
+    return response;
+  };
 }
